@@ -1,0 +1,47 @@
+class Partition {
+public:
+    ListNode* partition(ListNode* pHead, int x) {
+        //创建一个新的节点用于尾插
+        ListNode* newHead = (ListNode*)malloc(sizeof(ListNode));
+        //将新节点连接在表头，同时给新节点设置一个尾指针用于尾插
+        newHead->next = pHead;
+        ListNode* tail = newHead;
+        //当前节点
+        ListNode* current = pHead;
+        //当前节点的前驱节点
+        ListNode* pre = newHead;
+        //遍历原来链表，将小于x的节点尾插到newHead后
+        while(current)
+        {
+            if(current->val < x)
+            {
+                //如果当前节点是头节点
+                if(current == pHead)
+                {
+                    pre = pre->next;
+                    current = current->next;
+                    tail = tail->next;
+                    pHead = pHead->next;
+                }
+                else
+                {
+                    pre->next = current->next;
+                    current->next = tail->next;
+                    tail->next = current;
+                    tail = tail->next;
+                    current = pre->next;
+                }
+            }
+            else
+            {
+                pre = pre->next;
+                current = current->next;
+            }
+        }
+        //pHead指向当前链表的头结点并返回
+        pHead = newHead->next;
+        free(newHead);
+        newHead = NULL;
+        return pHead;
+    }
+};
