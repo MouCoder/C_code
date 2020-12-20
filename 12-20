@@ -1,0 +1,43 @@
+struct ListNode* sortList(struct ListNode* head){
+    //新链表的头结点
+    struct ListNode* newHead = (struct ListNode*)malloc(sizeof(struct ListNode));
+    newHead->next = NULL;
+    struct ListNode* tail = newHead;
+    //遍历链表，每次将链表中的最大节点尾插到新链表中
+    while(head)
+    {
+        //遍历链表的节点及其前驱节点，最大节点及其前驱节点
+        struct ListNode* pHead = head;
+        struct ListNode* prePHead = head;
+        struct ListNode* min = head;
+        struct ListNode* preMin = head;
+        //查找最小节点，min
+        while(pHead)
+        {
+            if(pHead->val < min->val)
+            {
+                preMin = prePHead;
+                min = pHead;
+            }
+            prePHead = pHead;
+            pHead = pHead->next;
+        }
+        //如果最小节点时当前链表的头节点，则链表的头结点要相应的后移
+        if(min == head)
+        {
+            head = head->next;
+        }
+        //将最大节点尾插到新链表中
+        if(tail)//防止申请空间失败，tail节点为空
+        {
+            preMin->next = min->next;
+            tail->next = min;
+            min->next = NULL;
+            tail = tail->next;
+        }
+    }
+    head = newHead->next;
+    free(newHead);
+    newHead = NULL;
+    return head;
+}
