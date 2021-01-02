@@ -1,0 +1,40 @@
+struct ListNode* mergeTwoLists(struct ListNode* l1, struct ListNode* l2){
+    //新链表的头结点
+    struct ListNode* newHead = (struct ListNode*)malloc(sizeof(struct ListNode));
+    newHead->next = NULL;
+    struct ListNode* tail = newHead;
+    //遍历两个链表，比较节点大小，将较小的节点插入到新链表的表尾
+    while(l1 && l2)
+    {
+        struct ListNode* l1Next = l1->next;
+        struct ListNode* l2Next = l2->next;
+        if(l1->val < l2->val)
+        {
+            l1->next = NULL;
+            tail->next = l1;
+            tail = tail->next;
+            l1 = l1Next;
+        }
+        else
+        {
+            l2->next = NULL;
+            tail->next = l2;
+            tail = tail->next;
+            l2 = l2Next;
+        }
+    }
+    //如果一个链表已经遍历完了，将另一个链表剩余的节点直接链接到新链表的表尾
+    if(l1)
+    {
+        tail->next = l1;
+    }
+    else if(l2)
+    {
+        tail->next = l2;
+    }
+    //释放新链表的头结点，返回结果
+    struct listNode* ret = newHead->next;
+    free(newHead);
+    newHead = NULL;
+    return ret;
+}
